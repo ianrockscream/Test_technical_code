@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row">
+    &nbsp;
+</div>
+<div class="row">
+    <div class="col-md-9">
+        <input type="number" name="inputangka" class="form-control" id="inputangka" /><br />
+        <span id="output"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn btn-info" onclick="generateSegitiga()" value="Generate Segitiga">Generate Segitiga</button>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-info" onclick="generateBilanganGanjil()" value="Generate Bilangan Ganjil">Generate Bilangan Ganjil</button>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-info" onclick="generateBilanganPrima()" value="Generate Bilangan Prima">Generate Bilangan Prima</button>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script>
+    
+    function generateSegitiga() {
+        var input = $('#inputangka').val();
+        var obj = new Object();
+        obj.inputangka = input;
+        obj.type = 'segitiga';
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetResult", "Home")",
+            data: obj,
+            dataType: 'json',
+            success: function (result) {
+                var split = result.split(",");
+                var text = "";
+                for (var i = 0; i < split.length; i++) {
+                    text = text + split[i] + "<br>";
+                }
+                $('#output').text(text);
+            },
+            error: function (result) {
+                alert('Something wrong');
+            }
+        })
+    }
+    function generateBilanganGanjil() {
+        var input = $('#inputangka').val();
+        var obj = new Object();
+        obj.inputangka = input;
+        obj.type = 'ganjil';
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetResult", "Home")",
+            data: obj,
+            dataType: 'json',
+            success: function (result) {
+                if (result == true) {
+                    $('#output').text(input + ' adalah bilangan ganjil')
+                } else {
+                    $('#output').text(input + ' bukan bilangan ganjil')
+                }
+            },
+            error: function () {
+                alert('Something wrong');
+            }
+        })
+    }
+    function generateBilanganPrima() {
+        var input = $('#inputangka').val();
+        var obj = new Object();
+        obj.inputangka = input;
+        obj.type = 'prima';
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetResult", "Home")",
+            data: obj,
+            dataType: 'json',
+            success: function (result) {
+                if (result == true) {
+                    $('#output').text(input + ' adalah bilangan prima')
+                } else {
+                    $('#output').text(input + ' bukan bilangan prima')
+                }
+            },
+            error: function () {
+                alert('Something wrong');
+            }
+        })
+    }
+</script>
